@@ -1,0 +1,27 @@
+import { useState } from "react";
+function App(){
+    const[todo, setTodo]=useState('');
+    const[final,setFinal]=useState('');
+
+    
+    function Add(){
+       // console.log(todo)
+        setFinal([...final,todo,' ']);
+     /
+        
+    }
+    return(
+        < >
+        <div style={{textAlign:"center", marginTop:'80px'}}>
+          <input type="Enter the todo_List" placeholder="Enter the ToDo" value={todo} onChange={(event)=>setTodo(event.target.value)} /> <br /><br />
+          <button type="button" onClick={()=>Add()}> Save_Todo</button>
+          <button type="button" onClick={()=>setFinal()}>ClearTodo</button>
+           <h2> todo_Store is : {final}</h2>
+           
+          </div>
+         
+         
+        </>
+    )
+}
+export default App;
