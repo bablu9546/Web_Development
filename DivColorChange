@@ -1,0 +1,17 @@
+import { useState } from "react"
+export default function App(){
+    const[color, setColor]=useState('yellow');
+   
+    function Change(){
+         setColor('green');
+    }
+
+    return(
+        <div>
+            <div style={{background:color}}>
+            <h2>hello</h2>
+            </div>
+            <button type="button" onClick={Change}>Click Me</button>
+        </div>
+    )
+}
