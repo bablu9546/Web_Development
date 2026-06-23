@@ -1,0 +1,27 @@
+import { useState } from "react";
+export default function App() {
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [final, setFinal] = useState('');
+
+    function Add() {
+        console.log(name);
+        console.log(password);
+        setFinal(name + ' ' + password);
+    }
+    return (
+        <>
+       
+            <form action="bbb">
+                <input type="Enter the userName" placeholder="Enter the userName" value={name} onChange={(event) => setName(event.target.value)} /><br /><br />
+                <input type="Enter the passWord" placeholder="Enter the passWord" value={password} onChange={(event) => setPassword(event.target.value)} /><br /><br />
+                <button type="button"
+                onClick={() => Add()}>Submit</button>
+
+                <h2>{final}</h2>
+            </form>
+             
+            
+        </>
+    )
+}
