@@ -1,0 +1,15 @@
+ import { useState } from "react"
+ export default function App(){
+   const[value,setValue]=useState('Mejal_Prajapati');
+
+
+   return(
+     <div>
+       <h2>{value}</h2>
+      <button onClick={(event)=>setValue("Bablu Kumar")}>Click Here</button>
+
+      <hr />
+       <InputName/>
+     </div>
+   )
+ }
