@@ -1,0 +1,60 @@
+
+import { useState } from "react";
+function ExpenseTracker() {
+    const [expense, setExpense] = useState("");
+    const [amount, setAmount] = useState("");
+    const [final, setFinal] = useState([]);
+
+    const addExpense = (event) => {
+        event.preventDefault();
+        // console.log(expense,amount);
+        setFinal([...final, { expense, amount }]);
+
+
+    }
+    function deleteExpense(indexToDelete) {
+        setFinal(
+            final.filter((item, index) => index != indexToDelete)
+        );
+
+    };
+     
+  
+
+    return (
+        <div>
+
+            <div><h1>ExpenseTracker</h1></div>
+
+            <input type="Expense_Name" placeholder="Expense_Name" value={expense} onChange={(event) => setExpense(event.target.value)} required />
+
+            <input type="number" placeholder="Ente the amount" value={amount} onChange={(event) => setAmount(event.target.value)} required />
+
+            <button onClick={addExpense}>Add_Expense</button>
+
+            <hr />
+
+            {
+                final.map((item, index) => (
+
+                    <div key={index}>
+                        <h2 >{item.expense}</h2>
+                        <h2>rupess: {item.amount}</h2>
+                        <hr />
+                        <button onClick={() => deleteExpense(index)}>Delete</button>
+                        <button onClick={() => updateExpense(index)}>ExpenseUpdate</button>
+                    </div>
+
+
+
+                ))
+            }
+
+
+
+        </div>
+    )
+}
+
+
+export default ExpenseTracker;
