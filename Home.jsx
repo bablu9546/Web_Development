@@ -1,140 +1,142 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
-function Home() {
+const Home = () => {
 
-    const [amount, setAmount] = useState(" ");
-    const [expense, setExpense] = useState([]);
-    const [category, setCategory] = useState("None");
-    const [total, setTotal] = useState([]);
+ const[formData,setFormData]=useState({
+    fullName: '',
+    dob: '',
+    gender: '',
+    email: '',
+    phone: '',
+    address:'',
+    grade: '',
+    id:'',
+    parentName: '',
+    parentContact:'',
+    emergencyContact: ''
+ })
 
-    const Add = (event) => {
-        event.preventDefault();
-        if (!amount || !expense || category === "None") {
-            alert("fill in the blanks");
-            return;
-        }
+const handleChange=(event)=>{
+   
+  const{name,value}=event.target;
+
+  setFormData({
+    ...formData,[name]:value
+  })
+};
 
 
-        const newTotal = {
-            id: Date.now(),                            // A unique marker (using the current timestamp in milliseconds)
-            amount: amount,
-            expense: expense,
-            category: category
-        };
 
-        setTotal([...total, newTotal]);
-
-        setAmount("");     //( why used mean purpose is:  they completely reset your form inputs back to blank default states immediately    after an item is successfully added to your list.)
-        setExpense("");
-        setCategory("None");
-
+function Success(event){
+     event.preventDefault();
+     const { fullName, dob, gender, email, phone, grade, parentName, emergencyContact } = formData;
+    if(!fullName || !dob || !gender || !email || !phone || !grade || !parentName || !emergencyContact){
+        alert("fill in the blank");
     }
-
-
-
-    function Delete(idtoDelete) {
-
-    const updatedList = total.filter(
-        user => user.id !== idtoDelete
-    );
-
-    setTotal(updatedList);
+   sessionStorage.setItem("name",JSON.stringify(formData));
+   localStorage.setItem("name",JSON.stringify(formData));
+  
 }
 
 
 
 
-    useEffect(() => {
-        localStorage.setItem("name", JSON.stringify(total));
-    }, [total]);
+// Component ke andar, useState ke theek neeche ise likhein:
+// useEffect(() => {
+//   const savedData = localStorage.getItem("name"); // 1. Data nikala
+//   if (savedData) {
+//     setFormData(JSON.parse(savedData)); // 2. String ko wapas Object banakar state me daal diya
+//   }
+// }, []); // [] ka matlab yeh sirf page load hote hi ek baar chalega
 
 
-    useEffect(() => {
-        const savedName = localStorage.getItem("name");
-        if (savedName) {
-            setTotal(JSON.parse(savedName));
-        }
-    }, [])
+
+
+
 
     return (
-        <>
-            <div>
-                <div className='flex flex-wrap  gap-4 justify-center items-center translate-y-7'>
-                    <div>
-                        <input
-                            type="text" inputMode='numeric' pattern="[0-9]*"
-                            placeholder='Enter the amount'
-                            className='bg-white outline-none w-64 h-10 rounded-md hover:border-slate-400 transition-all duration-500 cursor-pointer text-center placeholder:italic'
-                            onChange={(event) => setAmount(event.target.value)} required />
-                    </div>
-                    <div>
-                        <input
-                            type="text" inputMode='numeric'
-                            placeholder='Enter the Expense'
-                            className='bg-white outline-none w-64 h-10 rounded-md hover:border-slate-400 transition-all duration-500 cursor-pointer text-center placeholder:italic'
-                            onChange={(event) => setExpense(event.target.value)} required />
-                    </div>
-                    <div className=' bg-white w-64  text-center' >
-                        <select name="" id=" "  value={category} onChange={(event) => setCategory(event.target.value)} defaultValue={"None"} required >
-                            <option value="None">None</option>
-                            <option value="Home & Bedroom">Home & Bedroom</option>
-                            <option value="Bathroom & Personal Care">Bathroom & Personal Care</option>
-                            <option value=" Kitchen & Dining"> Kitchen & Dining</option>
-                            <option value="Electronics & Gadgets">Electronics & Gadgets</option>
-                            <option value=" Clothing & Wearables"> Clothing & Wearables</option>
-                            <option value="Cleaning & Housekeeping">Cleaning & Housekeeping</option>
-                            <option value="Office & Study">Office & Study</option>
-                            <option value="Health & First Aid">Health & First Aid</option>
-                            <option value=" Travel & Commute"> Travel & Commute</option>
-                            <option value="Recreation & Fitness">Recreation & Fitness</option>
-                            <option value="other Items">other Items</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button
-                            className='bg-yellow-600 w-24 h-10 rounded-md text-slate-50 font-semibold font-serif'
-                            onClick={Add}
-                        >AddItems</button>
-                    </div>
-                    <div>
-                        
-                    </div>
+       <form onSubmit={Success} className=' flex-col  '>
+            <div className='flex flex-col justify-center items-center py-10 gap-4 bg-white border border-slate-200 w-auto'>
+                <div >
+                    <input type="text" placeholder='Full Name' 
+                    className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                    name='fullName' value={formData.fullName} required
+                    onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" placeholder='DD/MM/YY' inputMode='numeric'
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.dob} name='dob' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="email" placeholder='Email Address' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md ' 
+                     value={formData.email} name='email' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" inputMode='numeric' placeholder='Phone Number' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.phone} name='phone' required 
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" placeholder='Home Address' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.address} name='address' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" placeholder='Grade(current or previous)' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.grade} name='grade' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" inputMode='numeric' placeholder='Student ID' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.id} name='id' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <select name="gender" id="" value={formData.gender} onChange={handleChange} defaultValue={"None"}
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '>
+                        <option value="None">None</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" placeholder='Parent/Guardian Name' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.parentName} name='parentName' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" inputMode='numeric' placeholder='parent_Contact' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md ' 
+                     value={formData.parentContact} name='parentContact' required
+                      onChange={handleChange}/>
+                </div>
+                <div>
+                    <input type="text" placeholder='Emergency Name/Number' 
+                     className='bg-white w-64 h-8 outline-none border border-slate-500 text-center cursor-pointer placeholder:font-mono rounded-md '
+                     value={formData.emergencyContact} name='emergencyContact' required
+                      onChange={handleChange}/>
+                </div>
 
+                <div>
+                    <button type='submit' className='bg-blue-500 w-28 h-12 text-center text-white from-neutral-200 rounded-md'
+                    >Submit</button>
                 </div>
 
             </div>
 
 
-            <div>
-                <div className='flex justify-center items-center translate-y-14'>
-                    <div className='bg-white justify-center items-center w-64 h-40 rounded-md cursor-pointer outline-none  border-slate-400 text-center'>
-                        {/* <input type="text"
-                            placeholder='All Items'
-                            className=' bg-white justify-center items-center w-64 h-40 rounded-md cursor-default outline-none  border-slate-400 text-center  ' /> */}
-
-                        {
-                            total.map((item)=>(
-                                <>
-                               <div key={item.id}>
-
-                                <h2>Amount: {item.amount}</h2>
-
-                                <h2>Expense: {item.expense}</h2>
-
-                                <h2>Category: {item.category}</h2>
-
-                            </div>
-                            <button className='bg-red-800 w-24 h-10 rounded-md text-slate-50 font-semibold font-serif'
-                        onClick={() => Delete(item.id)}
-                        >Delete</button>
-                               </>
-                            ))
-                        }
-                    </div>
-                </div>
-            </div>
-        </>
+        </form>
     )
 }
 
-export default Home
+export default Home;
